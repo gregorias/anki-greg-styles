@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+set -o verbose
+mypy gregstyles test && \
+python3 -m unittest discover -s test/ -t .

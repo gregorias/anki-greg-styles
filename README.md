@@ -9,3 +9,11 @@ An Anki plugin that manages my card styles.
 Set up Pipenv:
 
     pipenv install --dev
+
+Set up npm:
+
+    npm install
+
+Install Lefthook:
+
+    lefthook install
