@@ -1,0 +1,17 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+anki = "==2.1.54"
+aqt = "==2.1.54"
+pyqt6 = "==6.3.*"
+PyQt6-WebEngine = "==6.3.*"
+
+[dev-packages]
+mypy = "*"
+yapf = "*"
+
+[requires]
+python_version = "3"
