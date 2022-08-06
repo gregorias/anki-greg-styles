@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+TARGET_PATH="$(readlink -f .)/gregstyles.ankiaddon"
+TMP_DIR=$(mktemp -d)
+
+cp gregstyles/*.py "${TMP_DIR}"
+cp gregstyles/manifest.json "${TMP_DIR}"
+mkdir "${TMP_DIR}"/assets
+cp gregstyles/assets/*.py "${TMP_DIR}"/assets
+cp -r assets "${TMP_DIR}"
+
+pushd $TMP_DIR
+zip ${TARGET_PATH} -j \
+  *.py \
+  manifest.json && \
+zip -r ${TARGET_PATH} \
+  assets
+popd
