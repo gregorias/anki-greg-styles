@@ -39,7 +39,7 @@ class AnkiAssetManager:
         self.col = col
 
     def has_newer_version(self) -> bool:
-        new_version = read_asset_version(codehighlighter_assets_directory() /
+        new_version = read_asset_version(plugin_assets_directory() /
                                          ASSET_VERSION_FILE_NAME)
         old_version = read_asset_version(
             anki_media_directory(self.col) / ASSET_VERSION_FILE_NAME)
@@ -59,7 +59,7 @@ class AnkiAssetManager:
         delete_media_assets(self.col)
 
 
-addon_path = os.path.dirname(__file__)
+addon_path = os.path.dirname(os.path.dirname(__file__))
 
 
 def read_asset_version(asset_version: pathlib.Path) -> Optional[int]:
@@ -71,7 +71,7 @@ def read_asset_version(asset_version: pathlib.Path) -> Optional[int]:
         return None
 
 
-def codehighlighter_assets_directory() -> pathlib.Path:
+def plugin_assets_directory() -> pathlib.Path:
     return pathlib.Path(addon_path) / 'assets'
 
 
@@ -84,10 +84,10 @@ def list_my_assets(dir: pathlib.Path) -> List[str]:
 
 
 def install_media_assets(col: Collection) -> None:
-    codehighlighter_assets_dir = codehighlighter_assets_directory()
-    my_assets = list_my_assets(codehighlighter_assets_dir)
+    plugin_assets_dir = plugin_assets_directory()
+    my_assets = list_my_assets(plugin_assets_dir)
     for asset in my_assets:
-        col.media.add_file(str(codehighlighter_assets_dir / asset))
+        col.media.add_file(str(plugin_assets_dir / asset))
 
 
 def delete_media_assets(col: Collection) -> None:
