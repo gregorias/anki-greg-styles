@@ -14,3 +14,17 @@
   * screens. */
  max-width: 24em;
 }
+
+kbd.stackoverflow {
+  display: inline-block;
+  margin: 0 0.1em;
+  padding: .1em .6em;
+  line-height: 1.4;
+  color: hsl(210, 9%, 91%);
+  text-shadow: 0 1px 0 hsl(0, 0%, 17.5%);
+  background-color: hsl(210, 4%, 26%);
+  border: 1px solid hsl(210, 6.5%, 52%);
+  border-top-color: hsl(210,8%,45%);
+  border-radius: 3px;
+  box-shadow: 0 1px 1px hsla(210,8%,5%,0.8);
+}
