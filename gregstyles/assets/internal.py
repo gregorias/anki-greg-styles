@@ -12,7 +12,7 @@ __all__ = [
     'sync_assets', 'AssetManager', 'AnkiAssetManager', 'read_asset_version'
 ]
 
-PLUGIN_CLASS_NAME = 'anki-greg-styles'
+PLUGIN_CLASS_NAME = 'greg-styles'
 ASSET_PREFIX = f'_{PLUGIN_CLASS_NAME}-'
 ASSET_VERSION_FILE_NAME = f'{ASSET_PREFIX}asset-version.txt'
 IMPORT_STATEMENTS = (f'<link rel="stylesheet" href="{ASSET_PREFIX}main.css" ' +
