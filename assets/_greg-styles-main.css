@@ -28,3 +28,14 @@ kbd.stackoverflow {
   border-radius: 3px;
   box-shadow: 0 1px 1px hsla(210,8%,5%,0.8);
 }
+
+.img-frame {
+  display:flex;
+  justify-content:center;
+  margin: 0.5em 0;
+}
+.img-frame > img {
+  background-color: white;
+  padding: 5px;
+  border: black solid medium;
+}
