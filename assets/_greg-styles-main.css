@@ -39,3 +39,26 @@ kbd.stackoverflow {
   padding: 5px;
   border: black solid medium;
 }
+
+/* A command snippet like on https://git-scm.com/docs/git-cherry-pick. */
+pre.git-scm {
+  padding: 0.5em 1em;
+  line-height: 1.29em;
+  color: #4e443c;
+  background-color: #e8e7dd;
+  border: solid 1px #efeee6;
+  border-radius: 3px;
+}
+.nightMode pre.git-scm {
+  color: rgb(188, 183, 174);
+  background-color: rgb(38, 37, 26);
+  border-color: rgb(54, 58, 61);
+}
+
+/* Tailwind-like utility classes */
+.flex {
+  display: flex;
+}
+.justify-center {
+  justify-content: center;
+}
