@@ -17,3 +17,10 @@ Set up npm:
 Install Lefthook:
 
     lefthook install
+
+## Release & Installation
+
+### Build & import
+
+1. Run `package`.
+2. Import `ankiassets.ankiaddon` in Anki.
