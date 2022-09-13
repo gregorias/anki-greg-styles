@@ -6,6 +6,12 @@ An Anki plugin that manages my card styles.
 
 ### Dev Environment Setup
 
+1. Install the required Python version:
+
+   ```shell
+   pyenv install CHECK_PIPFILE
+   ```
+
 1. Set up Pipenv:
 
     ```shell
