@@ -15,6 +15,12 @@
  max-width: 24em;
 }
 
+/* A deprecated way of creating pygments blocks */
+.pygments-block {
+  display:flex;
+  justify-content:center;
+}
+
 kbd.stackoverflow {
   display: inline-block;
   margin: 0 0.1em;
