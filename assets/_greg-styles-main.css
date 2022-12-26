@@ -14,6 +14,11 @@
   * screens. */
  max-width: 24em;
 }
+.card img {
+ /* ~350px is the width of my Pixel 7 Pro, so make sure that no image is wider
+  * than that. If they are, AnkiDroid has a flash of large image. */
+ max-width: 340px;
+}
 
 /* A deprecated way of creating pygments blocks */
 .pygments-block {
