@@ -12,6 +12,8 @@ This project requires the following tools:
 
 - [Commitlint]
 - [Lefthook]
+- [Just]
+- [Markdownlint]
 
 #### Setup
 
@@ -43,3 +45,5 @@ This project requires the following tools:
 
 [Commitlint]: https://github.com/conventional-changelog/commitlint
 [Lefthook]: https://github.com/evilmartians/lefthook
+[Just]: https://github.com/casey/just
+[Markdownlint]: https://github.com/igorshubovych/markdownlint-cli
