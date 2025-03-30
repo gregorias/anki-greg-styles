@@ -14,6 +14,7 @@ This project requires the following tools:
 - [Lefthook]
 - [Just]
 - [Markdownlint]
+- [Ruff]
 
 #### Setup
 
@@ -47,3 +48,4 @@ This project requires the following tools:
 [Lefthook]: https://github.com/evilmartians/lefthook
 [Just]: https://github.com/casey/just
 [Markdownlint]: https://github.com/igorshubovych/markdownlint-cli
+[Ruff]: https://github.com/astral-sh/ruff

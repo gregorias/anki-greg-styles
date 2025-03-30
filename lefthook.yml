@@ -12,10 +12,22 @@ pre-commit:
       files: git diff --name-only --cached --diff-filter=AM
       glob: "*.md"
       run: markdownlint {files}
+    ruff:
+      tags: lint
+      glob: "*.py"
+      run: just ruff
+    ruff-imports:
+      tags: style import
+      glob: "*.py"
+      run: ruff check --select=I001 {staged_files}
     yaml-prettier:
       tags: style
       glob: "*.{yml,yaml}"
       run: prettier -c {staged_files}
+    yapf:
+      tags: style
+      glob: "*.py"
+      run: yapf -i -r {staged_files} && git add {staged_files}
 commit-msg:
   commands:
     commitlint:
