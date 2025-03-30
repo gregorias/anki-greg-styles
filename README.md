@@ -2,9 +2,9 @@
 
 An Anki plugin that manages my card styles.
 
-## For Developers
+## For developers
 
-### Dev Environment Setup
+### Dev environment setup
 
 1. Install the required Python version:
 
@@ -30,10 +30,10 @@ An Anki plugin that manages my card styles.
     lefthook install
     ```
 
-## Release & Installation
+## Release & installation
 
 1. Create a release commit.
-    1. Bump up the package version in `codehighlighter/manifest.json`.
+    1. Bump up the package version in `gregstyles/manifest.json`.
     2. Tag the release commit `git tag vx.y.z && git push origin vx.y.z`.
-2. Use the `dev/bin/package` tool to create `codehighlighter.ankiaddon`.
-3. [Share the package on Anki.](https://addon-docs.ankiweb.net/#/sharing)
+2. Use the `dev/bin/package` tool to create `gregstyles.ankiaddon`.
+3. Install the `ankiaddon` file in Anki.
