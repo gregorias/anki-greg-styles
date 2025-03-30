@@ -6,6 +6,15 @@ An Anki plugin that manages my card styles.
 
 ### Dev environment setup
 
+#### Prerequisites
+
+This project requires the following tools:
+
+- [Commitlint]
+- [Lefthook]
+
+#### Setup
+
 1. Install the required Python version:
 
    ```shell
@@ -37,3 +46,6 @@ An Anki plugin that manages my card styles.
     2. Tag the release commit `git tag vx.y.z && git push origin vx.y.z`.
 2. Use the `dev/bin/package` tool to create `gregstyles.ankiaddon`.
 3. Install the `ankiaddon` file in Anki.
+
+[Commitlint]: https://github.com/conventional-changelog/commitlint
+[Lefthook]: https://github.com/evilmartians/lefthook
