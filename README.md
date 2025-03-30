@@ -27,12 +27,6 @@ This project requires the following tools:
     pipenv install --dev
     ```
 
-1. Set up npm:
-
-    ```shell
-    npm install
-    ```
-
 1. Install Lefthook:
 
     ```shell
