@@ -26,11 +26,8 @@ def modify_templates(modify: Callable[[str], str]) -> None:
 def load_mw_and_sync():
     main_window = mw
     if not main_window:
-        # For some reason the main window is not initialized yet. Let's print
-        # an error message.
-        showWarning("Greg styles plugin tried to initialize, " +
-                    "but couldn't find the main window.\n" +
-                    f"Please report this to the author at {NEW_ISSUES_LINK}.")
+        showWarning("Greg styles plugin tried to initialize but couldn't " +
+                    "find the main window.")
         return None
     anki_asset_manager = AnkiAssetManager(modify_templates, main_window.col)
     sync_assets(anki_asset_manager)
