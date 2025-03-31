@@ -12,8 +12,6 @@ dev = [
     "aqt==2.1.54",
     "pyqt6==6.3.*",
     "PyQt6-WebEngine==6.3.*",
-    "mypy",
-    "yapf",
 ]
 
 [project.urls]

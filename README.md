@@ -14,7 +14,13 @@ This project requires the following tools:
 - [Lefthook]
 - [Just]
 - [Markdownlint]
+- [Mypy]
 - [Ruff]
+- [Uv]
+- [Yapf]
+
+They are not included in the project’s manifest to minimize the project’s
+footprint (specifically, the need to respond to security advisories).
 
 #### Setup
 
@@ -48,4 +54,7 @@ This project requires the following tools:
 [Lefthook]: https://github.com/evilmartians/lefthook
 [Just]: https://github.com/casey/just
 [Markdownlint]: https://github.com/igorshubovych/markdownlint-cli
+[Mypy]: https://mypy-lang.org/
 [Ruff]: https://github.com/astral-sh/ruff
+[Uv]:https://docs.astral.sh/uv/
+[Yapf]: https://github.com/google/yapf
