@@ -1,7 +1,5 @@
 pre-commit:
   scripts:
-    "format-files.bash":
-      runner: bash
     "check-asset-version.py":
       runner: python3
   commands:
@@ -28,6 +26,12 @@ pre-commit:
       tags: style
       glob: "*.toml"
       run: taplo fmt --check {staged_files}
+    uv-check:
+      tags: lint
+      glob: "{pyproject.toml,uv.lock}"
+      run: uv pip check
+    vulture:
+      run: just vulture
     yaml-prettier:
       tags: style
       glob: "*.{yml,yaml}"
@@ -36,8 +40,6 @@ pre-commit:
       tags: style
       glob: "*.py"
       run: yapf -i -r {staged_files} && git add {staged_files}
-    vulture:
-      run: just vulture
 commit-msg:
   commands:
     commitlint:
