@@ -20,3 +20,6 @@ dev = [
 
 [project.urls]
 "Homepage" = "https://github.com/gregorias/anki-greg-styles"
+
+[tool.mypy]
+python_executable = "./.venv/bin/python3"

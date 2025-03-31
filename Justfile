@@ -1,7 +1,7 @@
 test: mypy unittest
 
 mypy:
-  mypy --python-executable=.venv/bin/python3 gregstyles test
+  mypy gregstyles test
 
 ruff:
   ruff check gregstyles test
