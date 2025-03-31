@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 """The implementation of the greg styles plugin."""
 from typing import Callable
 
-from aqt import gui_hooks, mw  # type: ignore
-from aqt.utils import showWarning  # type: ignore
+from aqt import gui_hooks, mw
+from aqt.utils import showWarning
 
 from .assets import AnkiAssetManager, sync_assets
 
