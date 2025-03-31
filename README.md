@@ -18,16 +18,16 @@ This project requires the following tools:
 
 #### Setup
 
-1. Install the required Python version:
+1. Set up a local virtual environment:
 
    ```shell
-   pyenv install CHECK_PIPFILE
+   uv venv
    ```
 
-1. Set up Pipenv:
+1. Install development dependencies:
 
     ```shell
-    pipenv install --dev
+    uv pip install --group dev
     ```
 
 1. Install Lefthook:

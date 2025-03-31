@@ -1,0 +1,20 @@
+[project]
+name = "anki-greg-styles"
+version = "0.1.0"
+description = "An Anki plugin that manages my card styles."
+readme = "README.md"
+requires-python = "==3.9.21"
+
+# All dependencies are dev dependencies. We don’t build a wheel.
+[dependency-groups]
+dev = [
+    "anki==2.1.54",
+    "aqt==2.1.54",
+    "pyqt6==6.3.*",
+    "PyQt6-WebEngine==6.3.*",
+    "mypy",
+    "yapf",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/gregorias/anki-greg-styles"
