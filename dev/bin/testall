@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-set -o verbose
-# We need to set the Python path. Otherwise,
-# Mypy will use the global python3, since it’s globally installed.
-mypy --python-executable=.venv/bin/python3 gregstyles test && \
-python3 -m unittest discover -s test/ -t .

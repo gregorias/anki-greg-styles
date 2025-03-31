@@ -1,12 +1,10 @@
-# -*- coding: utf-8 -*-
 """This module manages the plugin's web assets."""
 import os.path
 import pathlib
 import re
-from typing import Callable, List, Optional, Protocol, Union
+from typing import Callable, List, Optional, Protocol
 
 from anki.collection import Collection
-from aqt import mw  # type: ignore
 
 __all__ = [
     'sync_assets', 'AssetManager', 'AnkiAssetManager', 'read_asset_version'
@@ -70,7 +68,7 @@ def read_asset_version(asset_version: pathlib.Path) -> Optional[int]:
     try:
         with open(asset_version, 'r') as f:
             return int(f.read())
-    except:
+    except Exception:
         return None
 
 
