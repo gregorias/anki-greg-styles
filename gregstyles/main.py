@@ -31,7 +31,7 @@ def load_mw_and_sync():
                     "find the main window.")
         return None
     anki_asset_manager = AnkiAssetManager(modify_templates, main_window.col)
-    sync_assets(functools.partian(has_newer_version, mw.col.media),
+    sync_assets(functools.partial(has_newer_version, mw.col.media),
                 anki_asset_manager)
 
 
