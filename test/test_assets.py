@@ -1,7 +1,9 @@
 import tempfile
 import unittest
+from textwrap import dedent
 
-import gregstyles.assets as assets
+from gregstyles import assets
+from gregstyles.assets import append_import_statements, delete_import_statements
 
 
 class FakeAssetManager:
@@ -46,7 +48,7 @@ class AssetsTestCase(unittest.TestCase):
                     {{#Notes}}
                     <div id=notes>
                     <h4>Notes</h4>
-                    {{Notes}}"""
+                    {{Notes}}\n"""
         old_tmpl = tmpl
 
         def modify_tmpl(modify):
@@ -55,4 +57,76 @@ class AssetsTestCase(unittest.TestCase):
 
         assets.configure_cards(modify_tmpl)
         assets.clear_cards(modify_tmpl)
-        self.assertEqual(tmpl, old_tmpl)
+        self.assertEqual(old_tmpl, tmpl)
+
+    def test_append_and_clear_import_statements_do_nothing(self):
+        tmpl = """{{FrontSide}}
+                    <hr id=answer>
+                    {{Back}}
+
+                    {{#Notes}}
+                    <div id=notes>
+                    <h4>Notes</h4>
+                    {{Notes}}"""
+
+        GUARD = 'PLUGIN (Addon 123)'
+        CLASS_NAME = 'anki-ch'
+
+        new_tmpl = append_import_statements(['c.css'], ['j.js'], GUARD,
+                                            CLASS_NAME, tmpl)
+        self.assertEqual(delete_import_statements(GUARD, CLASS_NAME, new_tmpl),
+                         tmpl + '\n')
+
+    def test_append_import_statements_adds_them_with_a_gap(self):
+        self.assertEqual(
+            append_import_statements(['c.css'], ['j.js'], 'Anki Greg Styles',
+                                     'plugin', '{{Cloze}}'),
+            dedent('''\
+            {{Cloze}}
+
+            <!-- Anki Greg Styles BEGIN -->
+            <link rel="stylesheet" href="c.css" class="plugin">
+            <script src="j.js" class="plugin"></script>
+            <!-- Anki Greg Styles END -->
+            '''))
+
+    def test_append_import_statements_adds_them_with_a_gap_and_minds_a_newline_in_template(
+            self):
+        self.assertEqual(
+            append_import_statements(['c.css'], ['j.js'], 'Anki Greg Styles',
+                                     'plugin', '{{Cloze}}\n'),
+            dedent('''\
+            {{Cloze}}
+
+            <!-- Anki Greg Styles BEGIN -->
+            <link rel="stylesheet" href="c.css" class="plugin">
+            <script src="j.js" class="plugin"></script>
+            <!-- Anki Greg Styles END -->
+            '''))
+
+    def test_delete_import_statements_deletes_new_style_imports(self):
+        TMPL = dedent('''\
+            {{Cloze}}
+
+            <!-- Anki Greg Styles BEGIN -->
+            <link rel="stylesheet" href="c.css" class="plugin">
+            <script src="j.js" class="plugin"></script>
+            <!-- Anki Greg Styles END -->
+            ''')
+        self.assertEqual(
+            delete_import_statements('Anki Greg Styles', 'plugin', TMPL),
+            '{{Cloze}}\n')
+
+    def test_delete_import_statements_deletes_too_many_newlines(self):
+        TMPL = dedent('''\
+            {{Cloze}}
+
+
+            <!-- Anki Greg Styles BEGIN -->
+            <link rel="stylesheet" href="c.css" class="plugin">
+            <script src="j.js" class="plugin"></script>
+            <!-- Anki Greg Styles END -->
+            ''')
+        self.assertEqual(
+            delete_import_statements('Anki Greg Styles', 'plugin', TMPL),
+            '{{Cloze}}\n')
