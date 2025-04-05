@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Checks that changes in assets/ are reflected in the asset-version file."""
 import subprocess
 import sys
