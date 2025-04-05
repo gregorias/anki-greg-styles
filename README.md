@@ -1,6 +1,8 @@
 # Anki Greg Styles
 
-An Anki plugin that manages my card styles.
+Greg Styles is an Anki add-on that manages my card styles.
+This add-on works by installing CSS stylesheets and modifying card templates
+upon Anki initialization.
 
 ## For developers
 
