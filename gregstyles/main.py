@@ -1,10 +1,11 @@
 """The implementation of the greg styles plugin."""
+import functools
 from typing import Callable
 
 from aqt import gui_hooks, mw
 from aqt.utils import showWarning
 
-from .assets import AnkiAssetManager, sync_assets
+from .assets import AnkiAssetManager, has_newer_version, sync_assets
 
 NEW_ISSUES_LINK = "https://github.com/gregorias/anki-greg-styles/issues/new."
 
@@ -30,7 +31,8 @@ def load_mw_and_sync():
                     "find the main window.")
         return None
     anki_asset_manager = AnkiAssetManager(modify_templates, main_window.col)
-    sync_assets(anki_asset_manager)
+    sync_assets(functools.partian(has_newer_version, mw.col.media),
+                anki_asset_manager)
 
 
 gui_hooks.profile_did_open.append(load_mw_and_sync)

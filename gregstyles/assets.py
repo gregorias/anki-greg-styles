@@ -1,10 +1,11 @@
-"""This module manages the plugin's web assets."""
+"""This module manages the add-on’s assets."""
 import os.path
 import pathlib
 import re
 from typing import Callable, List, Optional, Protocol
 
 from anki.collection import Collection
+from anki.media import MediaManager
 
 __all__ = [
     'sync_assets', 'AssetManager', 'AnkiAssetManager', 'read_asset_version'
@@ -18,9 +19,7 @@ IMPORT_STATEMENTS = (f'<link rel="stylesheet" href="{ASSET_PREFIX}main.css" ' +
 
 
 class AssetManager(Protocol):
-
-    def has_newer_version(self) -> bool:
-        return False
+    """An object that can install/delete an add-on’s assets."""
 
     def install_assets(self) -> None:
         return None
@@ -36,18 +35,6 @@ class AnkiAssetManager:
         self.modify_templates = modify_templates
         self.col = col
 
-    def has_newer_version(self) -> bool:
-        new_version = read_asset_version(plugin_assets_directory() /
-                                         ASSET_VERSION_FILE_NAME)
-        old_version = read_asset_version(
-            anki_media_directory(self.col) / ASSET_VERSION_FILE_NAME)
-        if new_version is None:
-            return False
-        elif old_version is None or new_version > old_version:
-            return True
-        else:
-            return False
-
     def install_assets(self) -> None:
         install_media_assets(self.col)
         configure_cards(self.modify_templates)
@@ -55,6 +42,27 @@ class AnkiAssetManager:
     def delete_assets(self) -> None:
         clear_cards(self.modify_templates)
         delete_media_assets(self.col)
+
+
+def has_newer_version(media: MediaManager) -> bool:
+    """Checks if the add-on has a newer asset version than the one in the media.
+
+    Args:
+        media: Anki’s media manager.
+
+    Returns:
+        bool: True if the add-on has a newer asset version, False otherwise.
+    """
+    new_version = read_asset_version(plugin_assets_directory() /
+                                     ASSET_VERSION_FILE_NAME)
+    old_version = read_asset_version(
+        anki_media_directory(media) / ASSET_VERSION_FILE_NAME)
+    if new_version is None:
+        return False
+    elif old_version is None or new_version > old_version:
+        return True
+    else:
+        return False
 
 
 addon_path = os.path.dirname(os.path.dirname(__file__))
@@ -73,8 +81,8 @@ def plugin_assets_directory() -> pathlib.Path:
     return pathlib.Path(addon_path) / 'assets'
 
 
-def anki_media_directory(col: Collection) -> pathlib.Path:
-    return pathlib.Path(col.media.dir())
+def anki_media_directory(media: MediaManager) -> pathlib.Path:
+    return pathlib.Path(media.dir())
 
 
 def list_my_assets(dir: pathlib.Path) -> List[str]:
@@ -89,7 +97,7 @@ def install_media_assets(col: Collection) -> None:
 
 
 def delete_media_assets(col: Collection) -> None:
-    my_assets = list_my_assets(anki_media_directory(col))
+    my_assets = list_my_assets(anki_media_directory(col.media))
     col.media.trash_files(my_assets)
 
 
@@ -114,9 +122,10 @@ def clear_cards(
     modify_templates(lambda tmpl: delete_import_statements(tmpl).strip())
 
 
-def sync_assets(asset_manager: AssetManager) -> None:
+def sync_assets(has_newer_version: Callable[[], bool],
+                asset_manager: AssetManager) -> None:
     """Checks if assets need updating and updates them."""
-    if not asset_manager.has_newer_version():
+    if not has_newer_version():
         return None
     asset_manager.delete_assets()
     asset_manager.install_assets()
