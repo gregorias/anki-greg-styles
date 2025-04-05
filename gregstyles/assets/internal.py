@@ -13,11 +13,8 @@ __all__ = [
 PLUGIN_CLASS_NAME = 'greg-styles'
 ASSET_PREFIX = f'_{PLUGIN_CLASS_NAME}-'
 ASSET_VERSION_FILE_NAME = f'{ASSET_PREFIX}asset-version.txt'
-IMPORT_STATEMENTS = (
-    f'<link rel="stylesheet" href="{ASSET_PREFIX}main.css" ' +
-    f'class="{PLUGIN_CLASS_NAME}">\n' +
-    f'<link rel="stylesheet" href="{ASSET_PREFIX}pygments-solarized-old.css" '
-    + f'class="{PLUGIN_CLASS_NAME}">\n')
+IMPORT_STATEMENTS = (f'<link rel="stylesheet" href="{ASSET_PREFIX}main.css" ' +
+                     f'class="{PLUGIN_CLASS_NAME}">\n')
 
 
 class AssetManager(Protocol):
