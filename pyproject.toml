@@ -1,9 +1,19 @@
 [project]
 name = "anki-greg-styles"
 version = "0.1.0"
-description = "An Anki plugin that manages my card styles."
+authors = ["Grzegorz Milka <grzegorzmilka@gmail.com>"]
+description = "Anki add-on with my card styles"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+  "Operating System :: OS Independent",
+]
+license = "AGPLv3"
 readme = "README.md"
 requires-python = "==3.9.21"
+
+[project.urls]
+"Homepage" = "https://github.com/gregorias/anki-greg-styles"
 
 # All dependencies are dev dependencies. We don’t build a wheel.
 [dependency-groups]
@@ -17,9 +27,6 @@ dev = [
   "PyQt6-WebEngine==6.6.0",
   "PyQt6-WebEngine-qt6==6.6.2",
 ]
-
-[project.urls]
-"Homepage" = "https://github.com/gregorias/anki-greg-styles"
 
 [tool.mypy]
 python_executable = "./.venv/bin/python3"
