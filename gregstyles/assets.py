@@ -52,8 +52,9 @@ def has_newer_version(media: MediaManager) -> bool:
     Returns:
         bool: True if the add-on has a newer asset version, False otherwise.
     """
-    new_version = read_asset_version(plugin_assets_directory() /
-                                     ASSET_VERSION_FILE_NAME)
+    plugin_asset_version_path = (plugin_assets_directory() /
+                                 ASSET_VERSION_FILE_NAME)
+    new_version = read_asset_version(plugin_asset_version_path)
     old_version = read_asset_version(
         anki_media_directory(media) / ASSET_VERSION_FILE_NAME)
     if new_version is None:
@@ -64,7 +65,7 @@ def has_newer_version(media: MediaManager) -> bool:
         return False
 
 
-addon_path = os.path.dirname(os.path.dirname(__file__))
+addon_path = os.path.dirname(__file__)
 
 
 def read_asset_version(asset_version: pathlib.Path) -> Optional[int]:
