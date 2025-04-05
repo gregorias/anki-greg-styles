@@ -1,7 +1,7 @@
 import tempfile
 import unittest
 
-import gregstyles.assets.internal as assets
+import gregstyles.assets as assets
 
 
 class FakeAssetManager:
