@@ -40,7 +40,7 @@ class AnkiAssetManager:
 
     def delete_assets(self) -> None:
         clear_cards(self.modify_templates)
-        delete_media_assets(self.col)
+        delete_media_assets(self.col.media)
 
 
 def has_newer_version(media: MediaManager) -> bool:
@@ -96,9 +96,10 @@ def install_media_assets(col: Collection) -> None:
         col.media.add_file(str(plugin_assets_dir / asset))
 
 
-def delete_media_assets(col: Collection) -> None:
-    my_assets = list_my_assets(anki_media_directory(col.media))
-    col.media.trash_files(my_assets)
+def delete_media_assets(media: MediaManager) -> None:
+    # TODO: Add a commit check for assets having a specific prefix.
+    my_assets = list_my_assets(anki_media_directory(media))
+    media.trash_files(my_assets)
 
 
 def configure_cards(
