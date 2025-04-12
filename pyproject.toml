@@ -26,6 +26,7 @@ dev = [
   "pyqt6-qt6==6.6.2",
   "PyQt6-WebEngine==6.6.0",
   "PyQt6-WebEngine-qt6==6.6.2",
+  "coverage>=7.8.0",
 ]
 
 [tool.mypy]

@@ -13,7 +13,7 @@ unittest:
   python3 -m unittest discover -s test/ -t .
 
 coverage:
-  coverage run --source='gregstyles/' --branch -m unittest discover -s test/ -t . &&
+  coverage run --source='gregstyles/' --branch -m unittest discover -s test/ -t . && \
   coverage html
 
 vulture:
