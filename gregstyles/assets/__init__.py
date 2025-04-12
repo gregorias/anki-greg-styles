@@ -2,10 +2,12 @@
 import os.path
 import pathlib
 import re
-from typing import Callable, List, Optional, Protocol, Tuple
+from typing import Callable, List, Optional, Protocol
 
 from anki.collection import Collection
 from anki.media import MediaManager
+
+from .guard import append_guarded_snippet, delete_guarded_snippet, guard_html_comments
 
 __all__ = [
     'sync_assets', 'AssetManager', 'AnkiAssetManager', 'read_asset_version'
@@ -126,14 +128,7 @@ def clear_cards(
     modify_templates(lambda tmpl: delete_old_import_statements(tmpl))
 
 
-def guards(guard: str) -> Tuple[str, str]:
-    """
-    Creates HTML comments bracketing import statements.
-
-    :param guard str A guard string used for HTML comments wrapping the imports.
-    :rtype Tuple[str, str]
-    """
-    return (f'<!-- {guard} BEGIN -->\n', f'<!-- {guard} END -->\n')
+# Code related to guarding.
 
 
 def append_import_statements(css_assets: List[str], js_assets: List[str],
@@ -155,12 +150,8 @@ def append_import_statements(css_assets: List[str], js_assets: List[str],
         f'<script src="{js_asset}" class="{class_name}"></script>\n'
         for js_asset in js_assets
     ]))
-
-    GUARD_BEGIN, GUARD_END = guards(guard)
-
-    gap = '\n' if tmpl.endswith('\n') else '\n\n'
-
-    return tmpl + gap + GUARD_BEGIN + IMPORT_STATEMENTS + GUARD_END
+    guards = guard_html_comments(guard)
+    return append_guarded_snippet(tmpl, IMPORT_STATEMENTS, guards)
 
 
 def delete_import_statements(guard: str, class_name: str, tmpl: str) -> str:
@@ -172,11 +163,7 @@ def delete_import_statements(guard: str, class_name: str, tmpl: str) -> str:
     :param tmpl str
     :rtype str: A template with deleted import statements.
     """
-    GUARD_BEGIN, GUARD_END = guards(guard)
-    return re.sub(f'(\n)*{re.escape(GUARD_BEGIN)}.*{re.escape(GUARD_END)}',
-                  '\n',
-                  tmpl,
-                  flags=re.MULTILINE | re.DOTALL)
+    return delete_guarded_snippet(tmpl, guard_html_comments(guard))
 
 
 def sync_assets(has_newer_version: Callable[[], bool],
