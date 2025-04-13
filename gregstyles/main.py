@@ -5,8 +5,7 @@ from typing import Callable, List
 from aqt import gui_hooks, mw
 from aqt.utils import showWarning
 
-import assets
-
+from . import assets
 from .assets import AnkiAssetManager, has_newer_version, sync_assets
 
 NEW_ISSUES_LINK = "https://github.com/gregorias/anki-greg-styles/issues/new."
