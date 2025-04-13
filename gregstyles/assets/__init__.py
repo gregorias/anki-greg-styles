@@ -4,7 +4,6 @@ import pathlib
 import re
 from typing import Callable, List, Optional, Protocol
 
-from anki.collection import Collection
 from anki.media import MediaManager
 
 from .guard import (
@@ -19,8 +18,6 @@ __all__ = [
     'sync_assets',
     'AssetManager',
     'AnkiAssetManager',
-    'ModelModifier',
-    'AnkiModelModifier',
     'read_asset_version',
 ]
 
@@ -45,23 +42,22 @@ class AssetManager(Protocol):
 
 class AnkiAssetManager:
 
-    def __init__(self, models: ModelModifier, col: Collection,
+    def __init__(self, models: ModelModifier, media: MediaManager,
                  external_css: List[str], internal_css: str):
         self.models = models
-        self.col = col
+        self.media = media
         self.external_css: List[str] = external_css
         self.internal_css: str = internal_css
 
     def install_assets(self) -> None:
-        install_media_assets(self.col)
+        install_media_assets(self.media)
         configure_cards(self.models,
                         external_css=self.external_css,
                         internal_css=self.internal_css)
 
     def delete_assets(self) -> None:
         clear_cards(self.models)
-        # TODO: Just pass the media manager.
-        delete_media_assets(self.col.media)
+        delete_media_assets(self.media)
 
 
 def has_newer_version(media: MediaManager) -> bool:
@@ -111,11 +107,11 @@ def list_my_assets(dir: pathlib.Path) -> List[str]:
     return [f for f in os.listdir(dir) if f.startswith(ASSET_PREFIX)]
 
 
-def install_media_assets(col: Collection) -> None:
+def install_media_assets(media: MediaManager) -> None:
     plugin_assets_dir = plugin_assets_directory()
     my_assets = list_my_assets(plugin_assets_dir)
     for asset in my_assets:
-        col.media.add_file(str(plugin_assets_dir / asset))
+        media.add_file(str(plugin_assets_dir / asset))
 
 
 def delete_media_assets(media: MediaManager) -> None:

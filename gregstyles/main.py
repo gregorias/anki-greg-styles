@@ -53,7 +53,7 @@ def load_mw_and_sync() -> None:
     anki_model_modifier = AnkiModelModifier(mw.col.models)
 
     anki_asset_manager = AnkiAssetManager(anki_model_modifier,
-                                          main_window.col,
+                                          main_window.col.media,
                                           external_css=EXTERNAL_STYLES,
                                           internal_css=read_internal_styles())
     sync_assets(functools.partial(has_newer_version, mw.col.media),
