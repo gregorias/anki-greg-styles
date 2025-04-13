@@ -60,7 +60,9 @@ class AssetsTestCase(unittest.TestCase):
         def modify_tmpl(modify):
             fake_model_modifier.modify_templates(modify)
 
-        assets.configure_cards(modify_tmpl)
+        assets.configure_cards(fake_model_modifier,
+                               external_css=["ext.css"],
+                               internal_css='.card { color: blue; }\n')
         assets.clear_cards(fake_model_modifier)
         self.assertEqual(old_tmpl, tmpl)
         self.assertEqual(old_css, css)

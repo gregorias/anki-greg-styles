@@ -24,6 +24,7 @@ __all__ = [
     'read_asset_version',
 ]
 
+# TODO: Move this constants up the stack.
 GUARD = 'Anki Greg Styles'
 PLUGIN_CLASS_NAME = 'greg-styles'
 ASSET_PREFIX = f'_{PLUGIN_CLASS_NAME}-'
@@ -44,16 +45,22 @@ class AssetManager(Protocol):
 
 class AnkiAssetManager:
 
-    def __init__(self, models: ModelModifier, col: Collection):
+    def __init__(self, models: ModelModifier, col: Collection,
+                 external_css: List[str], internal_css: str):
         self.models = models
         self.col = col
+        self.external_css: List[str] = external_css
+        self.internal_css: str = internal_css
 
     def install_assets(self) -> None:
         install_media_assets(self.col)
-        configure_cards(lambda tmpl: self.models.modify_templates(tmpl))
+        configure_cards(self.models,
+                        external_css=self.external_css,
+                        internal_css=self.internal_css)
 
     def delete_assets(self) -> None:
         clear_cards(self.models)
+        # TODO: Just pass the media manager.
         delete_media_assets(self.col.media)
 
 
@@ -116,11 +123,20 @@ def delete_media_assets(media: MediaManager) -> None:
     media.trash_files(my_assets)
 
 
-def configure_cards(
-        modify_templates: Callable[[Callable[[str], str]], None]) -> None:
+def configure_cards(models: ModelModifier, external_css: List[str],
+                    internal_css: str) -> None:
 
-    modify_templates(lambda tmpl: append_import_statements(
-        [ASSET_PREFIX + 'main.css'], [], GUARD, PLUGIN_CLASS_NAME, tmpl))
+    if len(external_css) > 0:
+        models.modify_templates(lambda tmpl: append_import_statements(
+            external_css, [], GUARD, PLUGIN_CLASS_NAME, tmpl))
+
+    if len(internal_css) > 0:
+
+        def modify_styles(tmpl):
+            return append_guarded_snippet(tmpl, internal_css,
+                                          guard_css_comments(GUARD))
+
+        models.modify_styles(modify_styles)
 
 
 def clear_cards(models: ModelModifier) -> None:

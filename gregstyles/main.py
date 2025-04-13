@@ -1,13 +1,32 @@
 """The implementation of the greg styles plugin."""
 import functools
-from typing import Callable
+from typing import Callable, List
 
 from aqt import gui_hooks, mw
 from aqt.utils import showWarning
 
+import assets
+
 from .assets import AnkiAssetManager, has_newer_version, sync_assets
 
 NEW_ISSUES_LINK = "https://github.com/gregorias/anki-greg-styles/issues/new."
+
+PLUGIN_CLASS_NAME = 'greg-styles'
+ASSET_PREFIX = f'_{PLUGIN_CLASS_NAME}-'
+
+# TODO: Add a test checking that every asset is accounted for.
+ASSET_VERSION_FILE_NAME = f'{ASSET_PREFIX}asset-version.txt'
+EXTERNAL_STYLES: List[str] = []
+INTERNAL_STYLES = [f'{ASSET_PREFIX}main.css']
+
+
+def read_internal_styles():
+    css_snippets = []
+    for style in INTERNAL_STYLES:
+        full_path = assets.plugin_assets_directory() / style
+        with open(full_path, 'r') as f:
+            css_snippets.append(f.read())
+    return "\n".join(css_snippets)
 
 
 def modify_templates(modify: Callable[[str], str]) -> None:
@@ -30,7 +49,11 @@ def load_mw_and_sync():
         showWarning("Greg styles plugin tried to initialize but couldn't " +
                     "find the main window.")
         return None
-    anki_asset_manager = AnkiAssetManager(modify_templates, main_window.col)
+
+    anki_asset_manager = AnkiAssetManager(modify_templates,
+                                          main_window.col,
+                                          external_css=EXTERNAL_STYLES,
+                                          internal_css=read_internal_styles())
     sync_assets(functools.partial(has_newer_version, mw.col.media),
                 anki_asset_manager)
 
