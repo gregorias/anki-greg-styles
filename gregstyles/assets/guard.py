@@ -47,7 +47,7 @@ def delete_guarded_snippet(tmpl: str, guards: Guards) -> str:
     """
     Deletes a guarded snippet from a string.
 
-    :param in str The string to modify.
+    :param tmpl str The string to modify.
     :param guards Tuple[str, str] The guard strings.
     :rtype str: The modified string.
     """
