@@ -19,6 +19,16 @@ def guard_comments(guard: str, comment_markup: Tuple[str, str]) -> Guards:
             f'{comment_markup[0]} {guard} END {comment_markup[1]}\n')
 
 
+def guard_css_comments(guard: str) -> Guards:
+    """
+    Creates CSS comments bracketing import statements.
+
+    :param guard str A guard string used for CSS comments wrapping styles.
+    :rtype Tuple[str, str]
+    """
+    return guard_comments(guard, ('/*', '*/'))
+
+
 def guard_html_comments(guard: str) -> Guards:
     """
     Creates HTML comments bracketing import statements.

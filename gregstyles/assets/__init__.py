@@ -7,16 +7,29 @@ from typing import Callable, List, Optional, Protocol
 from anki.collection import Collection
 from anki.media import MediaManager
 
-from .guard import append_guarded_snippet, delete_guarded_snippet, guard_html_comments
+from .guard import (
+    append_guarded_snippet,
+    delete_guarded_snippet,
+    guard_css_comments,
+    guard_html_comments,
+)
+from .model import ModelModifier
 
 __all__ = [
-    'sync_assets', 'AssetManager', 'AnkiAssetManager', 'read_asset_version'
+    'sync_assets',
+    'AssetManager',
+    'AnkiAssetManager',
+    'ModelModifier',
+    'AnkiModelModifier',
+    'read_asset_version',
 ]
 
 GUARD = 'Anki Greg Styles'
 PLUGIN_CLASS_NAME = 'greg-styles'
 ASSET_PREFIX = f'_{PLUGIN_CLASS_NAME}-'
 ASSET_VERSION_FILE_NAME = f'{ASSET_PREFIX}asset-version.txt'
+
+StringTransformer = Callable[[str], str]
 
 
 class AssetManager(Protocol):
@@ -31,17 +44,16 @@ class AssetManager(Protocol):
 
 class AnkiAssetManager:
 
-    def __init__(self, modify_templates: Callable[[Callable[[str], str]],
-                                                  None], col: Collection):
-        self.modify_templates = modify_templates
+    def __init__(self, models: ModelModifier, col: Collection):
+        self.models = models
         self.col = col
 
     def install_assets(self) -> None:
         install_media_assets(self.col)
-        configure_cards(self.modify_templates)
+        configure_cards(lambda tmpl: self.models.modify_templates(tmpl))
 
     def delete_assets(self) -> None:
-        clear_cards(self.modify_templates)
+        clear_cards(self.models)
         delete_media_assets(self.col.media)
 
 
@@ -111,8 +123,7 @@ def configure_cards(
         [ASSET_PREFIX + 'main.css'], [], GUARD, PLUGIN_CLASS_NAME, tmpl))
 
 
-def clear_cards(
-        modify_templates: Callable[[Callable[[str], str]], None]) -> None:
+def clear_cards(models: ModelModifier) -> None:
 
     def delete_old_import_statements(tmpl):
         return re.sub(f'^<[^>]*class="{PLUGIN_CLASS_NAME}"[^>]*>[^\n]*\n',
@@ -120,12 +131,15 @@ def clear_cards(
                       tmpl,
                       flags=re.MULTILINE)
 
-    modify_templates(
+    models.modify_templates(
         lambda tmpl: delete_import_statements(GUARD, PLUGIN_CLASS_NAME, tmpl))
 
     # TODO: Delete this backward-compatible clearing of the import statements
     # once the new add-on has been out for a while.
-    modify_templates(lambda tmpl: delete_old_import_statements(tmpl))
+    models.modify_templates(lambda tmpl: delete_old_import_statements(tmpl))
+
+    models.modify_styles(
+        lambda tmpl: delete_guarded_snippet(tmpl, guard_css_comments(GUARD)))
 
 
 # Code related to guarding.

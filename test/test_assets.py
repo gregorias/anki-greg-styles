@@ -4,6 +4,7 @@ from textwrap import dedent
 
 from gregstyles import assets
 from gregstyles.assets import append_import_statements, delete_import_statements
+from test.assets.model import FakeModelModifier
 
 
 class FakeAssetManager:
@@ -49,15 +50,20 @@ class AssetsTestCase(unittest.TestCase):
                     <div id=notes>
                     <h4>Notes</h4>
                     {{Notes}}\n"""
+        css = ".card { color: black; }\n"
         old_tmpl = tmpl
+        old_css = css
+        fake_model_modifier = FakeModelModifier()
+        fake_model_modifier.add_template(tmpl)
+        fake_model_modifier.add_style(css)
 
         def modify_tmpl(modify):
-            nonlocal tmpl
-            tmpl = modify(tmpl)
+            fake_model_modifier.modify_templates(modify)
 
         assets.configure_cards(modify_tmpl)
-        assets.clear_cards(modify_tmpl)
+        assets.clear_cards(fake_model_modifier)
         self.assertEqual(old_tmpl, tmpl)
+        self.assertEqual(old_css, css)
 
     def test_append_and_clear_import_statements_do_nothing(self):
         tmpl = """{{FrontSide}}
