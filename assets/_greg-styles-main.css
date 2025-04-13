@@ -1,29 +1,31 @@
 .card {
- /* Center the content of my cards on wider screens. */
- display:flex;
- justify-content: center;
+  /* Center the content of my cards on wider screens. */
+  display: flex;
+  justify-content: center;
 
- background-color: white;
- font-size: 20px;
+  background-color: white;
+  font-size: 20px;
 }
-.card > * {
- /* https://ishadeed.com/article/min-max-css/#setting-min-width-to-zero-with-flexbox */
- min-width: 0;
- /* Set maximum width to minimize work involved in making responsive cards. My
+
+.card>* {
+  /* https://ishadeed.com/article/min-max-css/#setting-min-width-to-zero-with-flexbox */
+  min-width: 0;
+  /* Set maximum width to minimize work involved in making responsive cards. My
   * cards do not need to be wide, they just need to support mobile-like
   * screens. */
- max-width: 24em;
+  max-width: 24em;
 }
+
 .card img {
- /* ~350px is the width of my Pixel 7 Pro, so make sure that no image is wider
+  /* ~350px is the width of my Pixel 7 Pro, so make sure that no image is wider
   * than that. If they are, AnkiDroid has a flash of large image. */
- max-width: 340px;
+  max-width: 340px;
 }
 
 /* A deprecated way of creating pygments blocks */
 .pygments-block {
-  display:flex;
-  justify-content:center;
+  display: flex;
+  justify-content: center;
 }
 
 kbd.stackoverflow {
@@ -35,17 +37,18 @@ kbd.stackoverflow {
   text-shadow: 0 1px 0 hsl(0, 0%, 17.5%);
   background-color: hsl(210, 4%, 26%);
   border: 1px solid hsl(210, 6.5%, 52%);
-  border-top-color: hsl(210,8%,45%);
+  border-top-color: hsl(210, 8%, 45%);
   border-radius: 3px;
-  box-shadow: 0 1px 1px hsla(210,8%,5%,0.8);
+  box-shadow: 0 1px 1px hsla(210, 8%, 5%, 0.8);
 }
 
 .img-frame {
-  display:flex;
-  justify-content:center;
+  display: flex;
+  justify-content: center;
   margin: 0.5em 0;
 }
-.img-frame > img {
+
+.img-frame>img {
   background-color: white;
   padding: 5px;
   border: black solid medium;
@@ -60,11 +63,13 @@ pre.git-scm {
   border: solid 1px #efeee6;
   border-radius: 3px;
 }
+
 .nightMode pre.git-scm {
   color: rgb(188, 183, 174);
   background-color: rgb(38, 37, 26);
   border-color: rgb(54, 58, 61);
 }
+
 code.git-scm {
   display: inline;
   padding: 0 5px;
@@ -74,6 +79,7 @@ code.git-scm {
   background-color: #fff;
   border: solid 1px #efeee6;
 }
+
 .nightMode code.git-scm {
   color: rgb(242, 90, 64);
   background-color: rgb(24, 26, 27);
@@ -84,9 +90,11 @@ code.git-scm {
 .flex {
   display: flex;
 }
+
 .justify-center {
   justify-content: center;
 }
+
 .leading-snug {
   line-height: 1.35em;
 }
