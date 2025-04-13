@@ -7,6 +7,7 @@ from aqt.utils import showWarning
 
 from . import assets
 from .assets import AnkiAssetManager, has_newer_version, sync_assets
+from .assets.model import AnkiModelModifier
 
 NEW_ISSUES_LINK = "https://github.com/gregorias/anki-greg-styles/issues/new."
 
@@ -42,14 +43,16 @@ def modify_templates(modify: Callable[[str], str]) -> None:
         mw.col.models.save(model)
 
 
-def load_mw_and_sync():
+def load_mw_and_sync() -> None:
     main_window = mw
     if not main_window:
         showWarning("Greg styles plugin tried to initialize but couldn't " +
                     "find the main window.")
         return None
 
-    anki_asset_manager = AnkiAssetManager(modify_templates,
+    anki_model_modifier = AnkiModelModifier(mw.col.models)
+
+    anki_asset_manager = AnkiAssetManager(anki_model_modifier,
                                           main_window.col,
                                           external_css=EXTERNAL_STYLES,
                                           internal_css=read_internal_styles())

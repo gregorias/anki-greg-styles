@@ -86,7 +86,8 @@ def has_newer_version(media: MediaManager) -> bool:
         return False
 
 
-addon_path = os.path.dirname(__file__)
+# TODO: Test the relative path.
+addon_path = os.path.dirname(os.path.dirname(__file__))
 
 
 def read_asset_version(asset_version: pathlib.Path) -> Optional[int]:
