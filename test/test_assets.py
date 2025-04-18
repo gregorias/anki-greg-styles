@@ -80,23 +80,21 @@ class AssetsTestCase(unittest.TestCase):
                     {{Notes}}"""
 
         GUARD = 'PLUGIN (Addon 123)'
-        CLASS_NAME = 'anki-ch'
 
-        new_tmpl = append_import_statements(['c.css'], ['j.js'], GUARD,
-                                            CLASS_NAME, tmpl)
+        new_tmpl = append_import_statements(['c.css'], ['j.js'], GUARD, tmpl)
         self.assertEqual(delete_import_statements(GUARD, new_tmpl),
                          tmpl + '\n')
 
     def test_append_import_statements_adds_them_with_a_gap(self):
         self.assertEqual(
             append_import_statements(['c.css'], ['j.js'], 'Anki Greg Styles',
-                                     'plugin', '{{Cloze}}'),
+                                     '{{Cloze}}'),
             dedent('''\
             {{Cloze}}
 
             <!-- Anki Greg Styles BEGIN -->
-            <link rel="stylesheet" href="c.css" class="plugin">
-            <script src="j.js" class="plugin"></script>
+            <link rel="stylesheet" href="c.css">
+            <script src="j.js"></script>
             <!-- Anki Greg Styles END -->
             '''))
 
@@ -104,13 +102,13 @@ class AssetsTestCase(unittest.TestCase):
             self):
         self.assertEqual(
             append_import_statements(['c.css'], ['j.js'], 'Anki Greg Styles',
-                                     'plugin', '{{Cloze}}\n'),
+                                     '{{Cloze}}\n'),
             dedent('''\
             {{Cloze}}
 
             <!-- Anki Greg Styles BEGIN -->
-            <link rel="stylesheet" href="c.css" class="plugin">
-            <script src="j.js" class="plugin"></script>
+            <link rel="stylesheet" href="c.css">
+            <script src="j.js"></script>
             <!-- Anki Greg Styles END -->
             '''))
 

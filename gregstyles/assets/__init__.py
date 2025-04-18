@@ -126,7 +126,7 @@ def configure_cards(models: ModelModifier, external_css: List[str],
 
     if len(external_css) > 0:
         models.modify_templates(lambda tmpl: append_import_statements(
-            external_css, [], guard, PLUGIN_CLASS_NAME, tmpl))
+            external_css, [], guard, tmpl))
 
     if len(internal_css) > 0:
 
@@ -159,24 +159,20 @@ def clear_cards(models: ModelModifier, guard: str) -> None:
 
 
 def append_import_statements(css_assets: List[str], js_assets: List[str],
-                             guard: str, class_name: str, tmpl: str) -> str:
+                             guard: str, tmpl: str) -> str:
     """
     Appends import statements to a card template.
 
     :param css_assets List[str]
     :param js_assets List[str]
     :param guard str A guard string used for HTML comments wrapping the imports.
-    :param class_name str A class name that identifies this add-on.
     :param tmpl str The template to modify.
     :rtype str: A template with added import statements.
     """
     IMPORT_STATEMENTS = (''.join([
-        f'<link rel="stylesheet" href="{css_asset}" class="{class_name}">\n'
+        f'<link rel="stylesheet" href="{css_asset}">\n'
         for css_asset in css_assets
-    ] + [
-        f'<script src="{js_asset}" class="{class_name}"></script>\n'
-        for js_asset in js_assets
-    ]))
+    ] + [f'<script src="{js_asset}"></script>\n' for js_asset in js_assets]))
     guards = guard_html_comments(guard)
     return append_guarded_snippet(tmpl, IMPORT_STATEMENTS, guards)
 
