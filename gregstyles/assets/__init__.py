@@ -1,7 +1,6 @@
 """This module manages the add-on’s assets."""
 import os.path
 import pathlib
-import re
 from typing import Callable, List, Optional, Protocol
 
 from anki.media import MediaManager
@@ -22,8 +21,7 @@ __all__ = [
 ]
 
 # TODO: Move this constants up the stack.
-PLUGIN_CLASS_NAME = 'greg-styles'
-ASSET_PREFIX = f'_{PLUGIN_CLASS_NAME}-'
+ASSET_PREFIX = '_greg-styles-'
 ASSET_VERSION_FILE_NAME = f'{ASSET_PREFIX}asset-version.txt'
 
 StringTransformer = Callable[[str], str]
@@ -138,19 +136,7 @@ def configure_cards(models: ModelModifier, external_css: List[str],
 
 
 def clear_cards(models: ModelModifier, guard: str) -> None:
-
-    def delete_old_import_statements(tmpl):
-        return re.sub(f'^<[^>]*class="{PLUGIN_CLASS_NAME}"[^>]*>[^\n]*\n',
-                      "",
-                      tmpl,
-                      flags=re.MULTILINE)
-
     models.modify_templates(lambda tmpl: delete_import_statements(guard, tmpl))
-
-    # TODO: Delete this backward-compatible clearing of the import statements
-    # once the new add-on has been out for a while.
-    models.modify_templates(lambda tmpl: delete_old_import_statements(tmpl))
-
     models.modify_styles(
         lambda tmpl: delete_guarded_snippet(tmpl, guard_css_comments(guard)))
 
