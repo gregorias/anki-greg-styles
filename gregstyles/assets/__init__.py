@@ -24,8 +24,6 @@ __all__ = [
 ASSET_PREFIX = '_greg-styles-'
 ASSET_VERSION_FILE_NAME = f'{ASSET_PREFIX}asset-version.txt'
 
-StringTransformer = Callable[[str], str]
-
 
 class AssetManager(Protocol):
     """An object that can install/delete an add-on’s assets."""
