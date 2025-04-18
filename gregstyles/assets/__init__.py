@@ -22,7 +22,6 @@ __all__ = [
 ]
 
 # TODO: Move this constants up the stack.
-GUARD = 'Anki Greg Styles'
 PLUGIN_CLASS_NAME = 'greg-styles'
 ASSET_PREFIX = f'_{PLUGIN_CLASS_NAME}-'
 ASSET_VERSION_FILE_NAME = f'{ASSET_PREFIX}asset-version.txt'
@@ -43,20 +42,22 @@ class AssetManager(Protocol):
 class AnkiAssetManager:
 
     def __init__(self, models: ModelModifier, media: MediaManager,
-                 external_css: List[str], internal_css: str):
+                 external_css: List[str], internal_css: str, guard: str):
         self.models = models
         self.media = media
         self.external_css: List[str] = external_css
         self.internal_css: str = internal_css
+        self.guard: str = guard
 
     def install_assets(self) -> None:
         install_media_assets(self.media)
         configure_cards(self.models,
                         external_css=self.external_css,
-                        internal_css=self.internal_css)
+                        internal_css=self.internal_css,
+                        guard=self.guard)
 
     def delete_assets(self) -> None:
-        clear_cards(self.models)
+        clear_cards(self.models, guard=self.guard)
         delete_media_assets(self.media)
 
 
@@ -121,22 +122,22 @@ def delete_media_assets(media: MediaManager) -> None:
 
 
 def configure_cards(models: ModelModifier, external_css: List[str],
-                    internal_css: str) -> None:
+                    internal_css: str, guard: str) -> None:
 
     if len(external_css) > 0:
         models.modify_templates(lambda tmpl: append_import_statements(
-            external_css, [], GUARD, PLUGIN_CLASS_NAME, tmpl))
+            external_css, [], guard, PLUGIN_CLASS_NAME, tmpl))
 
     if len(internal_css) > 0:
 
         def modify_styles(tmpl):
             return append_guarded_snippet(tmpl, internal_css,
-                                          guard_css_comments(GUARD))
+                                          guard_css_comments(guard))
 
         models.modify_styles(modify_styles)
 
 
-def clear_cards(models: ModelModifier) -> None:
+def clear_cards(models: ModelModifier, guard: str) -> None:
 
     def delete_old_import_statements(tmpl):
         return re.sub(f'^<[^>]*class="{PLUGIN_CLASS_NAME}"[^>]*>[^\n]*\n',
@@ -144,15 +145,14 @@ def clear_cards(models: ModelModifier) -> None:
                       tmpl,
                       flags=re.MULTILINE)
 
-    models.modify_templates(
-        lambda tmpl: delete_import_statements(GUARD, PLUGIN_CLASS_NAME, tmpl))
+    models.modify_templates(lambda tmpl: delete_import_statements(guard, tmpl))
 
     # TODO: Delete this backward-compatible clearing of the import statements
     # once the new add-on has been out for a while.
     models.modify_templates(lambda tmpl: delete_old_import_statements(tmpl))
 
     models.modify_styles(
-        lambda tmpl: delete_guarded_snippet(tmpl, guard_css_comments(GUARD)))
+        lambda tmpl: delete_guarded_snippet(tmpl, guard_css_comments(guard)))
 
 
 # Code related to guarding.
@@ -181,7 +181,7 @@ def append_import_statements(css_assets: List[str], js_assets: List[str],
     return append_guarded_snippet(tmpl, IMPORT_STATEMENTS, guards)
 
 
-def delete_import_statements(guard: str, class_name: str, tmpl: str) -> str:
+def delete_import_statements(guard: str, tmpl: str) -> str:
     """
     Deletes import statements from a card template.
 

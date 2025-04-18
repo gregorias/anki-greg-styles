@@ -60,10 +60,12 @@ class AssetsTestCase(unittest.TestCase):
         def modify_tmpl(modify):
             fake_model_modifier.modify_templates(modify)
 
+        guard = 'Anki Greg Styles'
         assets.configure_cards(fake_model_modifier,
                                external_css=["ext.css"],
-                               internal_css='.card { color: blue; }\n')
-        assets.clear_cards(fake_model_modifier)
+                               internal_css='.card { color: blue; }\n',
+                               guard=guard)
+        assets.clear_cards(fake_model_modifier, guard=guard)
         self.assertEqual(old_tmpl, tmpl)
         self.assertEqual(old_css, css)
 
@@ -82,7 +84,7 @@ class AssetsTestCase(unittest.TestCase):
 
         new_tmpl = append_import_statements(['c.css'], ['j.js'], GUARD,
                                             CLASS_NAME, tmpl)
-        self.assertEqual(delete_import_statements(GUARD, CLASS_NAME, new_tmpl),
+        self.assertEqual(delete_import_statements(GUARD, new_tmpl),
                          tmpl + '\n')
 
     def test_append_import_statements_adds_them_with_a_gap(self):
@@ -121,9 +123,8 @@ class AssetsTestCase(unittest.TestCase):
             <script src="j.js" class="plugin"></script>
             <!-- Anki Greg Styles END -->
             ''')
-        self.assertEqual(
-            delete_import_statements('Anki Greg Styles', 'plugin', TMPL),
-            '{{Cloze}}\n')
+        self.assertEqual(delete_import_statements('Anki Greg Styles', TMPL),
+                         '{{Cloze}}\n')
 
     def test_delete_import_statements_deletes_too_many_newlines(self):
         TMPL = dedent('''\
@@ -135,6 +136,5 @@ class AssetsTestCase(unittest.TestCase):
             <script src="j.js" class="plugin"></script>
             <!-- Anki Greg Styles END -->
             ''')
-        self.assertEqual(
-            delete_import_statements('Anki Greg Styles', 'plugin', TMPL),
-            '{{Cloze}}\n')
+        self.assertEqual(delete_import_statements('Anki Greg Styles', TMPL),
+                         '{{Cloze}}\n')

@@ -1,4 +1,4 @@
-"""The implementation of the greg styles plugin."""
+"""The implementation of the greg styles add-on."""
 import functools
 from typing import Callable, List
 
@@ -11,6 +11,8 @@ from .assets.model import AnkiModelModifier
 
 NEW_ISSUES_LINK = "https://github.com/gregorias/anki-greg-styles/issues/new."
 
+# The guard used in templates to clearly mark the add-on's code.
+GUARD = 'Anki Greg Styles'
 PLUGIN_CLASS_NAME = 'greg-styles'
 ASSET_PREFIX = f'_{PLUGIN_CLASS_NAME}-'
 
@@ -55,7 +57,8 @@ def load_mw_and_sync() -> None:
     anki_asset_manager = AnkiAssetManager(anki_model_modifier,
                                           main_window.col.media,
                                           external_css=EXTERNAL_STYLES,
-                                          internal_css=read_internal_styles())
+                                          internal_css=read_internal_styles(),
+                                          guard=GUARD)
     sync_assets(functools.partial(has_newer_version, mw.col.media),
                 anki_asset_manager)
 
