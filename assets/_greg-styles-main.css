@@ -3,6 +3,7 @@
   display: flex;
   justify-content: center;
 
+  /* The default is somewhat grayish, so make it white. */
   background-color: white;
   font-size: 20px;
 }
@@ -16,10 +17,30 @@
   max-width: 24em;
 }
 
+#notes {
+  border-width: 0.25rem 0px 0px 0px;
+  border-style: solid;
+  margin: 3rem 0px 0px 0px;
+  padding: 0px;
+}
+
+#notes h4 {
+  padding: 0px;
+  margin: 10px 0px;
+}
+
+pre {
+  overflow-x: scroll;
+}
+
 .card img {
   /* ~350px is the width of my Pixel 7 Pro, so make sure that no image is wider
   * than that. If they are, AnkiDroid has a flash of large image. */
   max-width: 340px;
+}
+
+.nightMode a {
+  color: #bfdbfe;
 }
 
 .img-lead {
