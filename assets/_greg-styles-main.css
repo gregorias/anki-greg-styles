@@ -22,12 +22,6 @@
   max-width: 340px;
 }
 
-/* A deprecated way of creating pygments blocks */
-.pygments-block {
-  display: flex;
-  justify-content: center;
-}
-
 kbd.stackoverflow {
   display: inline-block;
   margin: 0 0.1em;
@@ -40,18 +34,6 @@ kbd.stackoverflow {
   border-top-color: hsl(210, 8%, 45%);
   border-radius: 3px;
   box-shadow: 0 1px 1px hsla(210, 8%, 5%, 0.8);
-}
-
-.img-frame {
-  display: flex;
-  justify-content: center;
-  margin: 0.5em 0;
-}
-
-.img-frame > img {
-  background-color: white;
-  padding: 5px;
-  border: black solid medium;
 }
 
 /* A command snippet like on https://git-scm.com/docs/git-cherry-pick. */
