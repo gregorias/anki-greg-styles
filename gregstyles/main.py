@@ -22,12 +22,11 @@ ASSET_VERSION_FILE_NAME = f'{ASSET_PREFIX}asset-version.txt'
 EXTERNAL_STYLES: List[str] = []
 INTERNAL_STYLES = [f'{ASSET_PREFIX}main.css']
 
-# TODO: Test the relative path.
-addon_path = os.path.dirname(__file__)
+addon_path: pathlib.Path = pathlib.Path(os.path.dirname(__file__))
 
 
 def plugin_assets() -> pathlib.Path:
-    return pathlib.Path(addon_path) / 'asset-files'
+    return addon_path / 'asset-files'
 
 
 def read_internal_styles():
