@@ -24,6 +24,8 @@ __all__ = [
 class AssetManager(Protocol):
     """An object that can install/delete an add-on’s assets."""
 
+    # TODO: Use `sync` semantics instead. It’s safer and more inline
+    # with intended use.
     def install_assets(self) -> None:
         return None
 
@@ -104,7 +106,6 @@ def install_media_assets(media: MediaManager, plugin_assets: pathlib.Path,
 
 
 def delete_media_assets(media: MediaManager, asset_prefix) -> None:
-    # TODO: Add a commit check for assets having a specific prefix.
     my_assets = list_my_assets(anki_media_directory(media), asset_prefix)
     media.trash_files(my_assets)
 
