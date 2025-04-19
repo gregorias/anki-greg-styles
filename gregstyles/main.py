@@ -17,7 +17,6 @@ GUARD = 'Anki Greg Styles'
 PLUGIN_CLASS_NAME = 'greg-styles'
 ASSET_PREFIX = f'_{PLUGIN_CLASS_NAME}-'
 
-# TODO: Add a test checking that every asset is accounted for.
 ASSET_VERSION_FILE_NAME = f'{ASSET_PREFIX}asset-version.txt'
 EXTERNAL_STYLES: List[str] = []
 INTERNAL_STYLES = [f'{ASSET_PREFIX}main.css']
