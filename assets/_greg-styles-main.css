@@ -1,3 +1,11 @@
+:root {
+  --color-gray-50: oklch(0.985 0.002 247.839);
+}
+
+:root .nightMode {
+  --color-gray-50: oklch(0.085 0.002 247.839);
+}
+
 .card {
   /* Center the content of my cards on wider screens. */
   display: flex;
@@ -15,6 +23,15 @@
   * cards do not need to be wide, they just need to support mobile-like
   * screens. */
   max-width: 24em;
+}
+
+.cloze {
+  font-weight: bold;
+  color: blue;
+}
+
+.nightMode .cloze {
+  color: #6666ff;
 }
 
 #notes {
@@ -53,6 +70,16 @@ pre {
   border: black solid thick;
 }
 
+/* Obsolete classes. Do not use them. Prefer to use the classes above. */
+.img-lead-border {
+  display: flex;
+  justify-content: center;
+  margin: 0 0 0.75em 0;
+}
+.img-lead-border img {
+  border: black solid thick;
+}
+
 .bg-white {
   background-color: white;
 }
@@ -69,6 +96,28 @@ kbd.stackoverflow {
   border-top-color: hsl(210, 8%, 45%);
   border-radius: 3px;
   box-shadow: 0 1px 1px hsla(210, 8%, 5%, 0.8);
+}
+
+/* Styles for vim keybindings. */
+.vim pre,
+pre.vim {
+  background-color: #282828;
+  color: #d9c6a5;
+  border: solid;
+  border-width: thick;
+  border-color: #141414;
+  padding: 3px 5px;
+}
+code.vim {
+  background-color: #282828;
+  color: #d9c6a5;
+  padding: 3px;
+}
+.vim .specialkeyname {
+  color: #fe8019;
+}
+.vim .keystrokes {
+  color: #fe8019;
 }
 
 /* A command snippet like on https://git-scm.com/docs/git-cherry-pick. */
@@ -122,4 +171,11 @@ code.git-scm {
 
 .text-justify {
   text-align: justify;
+}
+
+/* https://heistak.github.io/your-code-displays-japanese-wrong/ */
+[lang="ja"] {
+  font-family:
+    "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans",
+    Meiryo, sans-serif;
 }
