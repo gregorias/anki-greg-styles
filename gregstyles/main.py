@@ -1,11 +1,12 @@
 """The implementation of the greg styles add-on."""
 import functools
+import os
+import pathlib
 from typing import Callable, List
 
 from aqt import gui_hooks, mw
 from aqt.utils import showWarning
 
-from . import assets
 from .assets import AnkiAssetManager, has_newer_version, sync_assets
 from .assets.model import AnkiModelModifier
 
@@ -21,12 +22,18 @@ ASSET_VERSION_FILE_NAME = f'{ASSET_PREFIX}asset-version.txt'
 EXTERNAL_STYLES: List[str] = []
 INTERNAL_STYLES = [f'{ASSET_PREFIX}main.css']
 
+# TODO: Test the relative path.
+addon_path = os.path.dirname(__file__)
+
+
+def plugin_assets() -> pathlib.Path:
+    return pathlib.Path(addon_path) / 'asset-files'
+
 
 def read_internal_styles():
     css_snippets = []
     for style in INTERNAL_STYLES:
-        full_path = assets.plugin_assets_directory() / style
-        with open(full_path, 'r') as f:
+        with open(plugin_assets() / style, 'r') as f:
             css_snippets.append(f.read())
     return "\n".join(css_snippets)
 
@@ -58,9 +65,12 @@ def load_mw_and_sync() -> None:
                                           main_window.col.media,
                                           external_css=EXTERNAL_STYLES,
                                           internal_css=read_internal_styles(),
-                                          guard=GUARD)
-    sync_assets(functools.partial(has_newer_version, mw.col.media),
-                anki_asset_manager)
+                                          guard=GUARD,
+                                          plugin_assets=plugin_assets(),
+                                          asset_prefix=ASSET_PREFIX)
+    sync_assets(
+        functools.partial(has_newer_version, mw.col.media, plugin_assets(),
+                          ASSET_VERSION_FILE_NAME), anki_asset_manager)
 
 
 gui_hooks.profile_did_open.append(load_mw_and_sync)

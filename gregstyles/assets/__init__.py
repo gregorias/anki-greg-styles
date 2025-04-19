@@ -1,4 +1,4 @@
-"""This module manages the add-on’s assets."""
+"""This module manages an add-on’s assets."""
 import os.path
 import pathlib
 from typing import Callable, List, Optional, Protocol
@@ -20,10 +20,6 @@ __all__ = [
     'read_asset_version',
 ]
 
-# TODO: Move this constants up the stack.
-ASSET_PREFIX = '_greg-styles-'
-ASSET_VERSION_FILE_NAME = f'{ASSET_PREFIX}asset-version.txt'
-
 
 class AssetManager(Protocol):
     """An object that can install/delete an add-on’s assets."""
@@ -38,15 +34,20 @@ class AssetManager(Protocol):
 class AnkiAssetManager:
 
     def __init__(self, models: ModelModifier, media: MediaManager,
-                 external_css: List[str], internal_css: str, guard: str):
+                 external_css: List[str], internal_css: str, guard: str,
+                 plugin_assets: pathlib.Path, asset_prefix: str) -> None:
         self.models = models
         self.media = media
         self.external_css: List[str] = external_css
         self.internal_css: str = internal_css
         self.guard: str = guard
+        self.plugin_assets = plugin_assets
+        self.asset_prefix = asset_prefix
 
     def install_assets(self) -> None:
-        install_media_assets(self.media)
+        install_media_assets(self.media,
+                             plugin_assets=self.plugin_assets,
+                             asset_prefix=self.asset_prefix)
         configure_cards(self.models,
                         external_css=self.external_css,
                         internal_css=self.internal_css,
@@ -54,10 +55,11 @@ class AnkiAssetManager:
 
     def delete_assets(self) -> None:
         clear_cards(self.models, guard=self.guard)
-        delete_media_assets(self.media)
+        delete_media_assets(self.media, asset_prefix=self.asset_prefix)
 
 
-def has_newer_version(media: MediaManager) -> bool:
+def has_newer_version(media: MediaManager, plugin_assets: pathlib.Path,
+                      asset_version_file_name: str) -> bool:
     """Checks if the add-on has a newer asset version than the one in the media.
 
     Args:
@@ -66,21 +68,15 @@ def has_newer_version(media: MediaManager) -> bool:
     Returns:
         bool: True if the add-on has a newer asset version, False otherwise.
     """
-    plugin_asset_version_path = (plugin_assets_directory() /
-                                 ASSET_VERSION_FILE_NAME)
-    new_version = read_asset_version(plugin_asset_version_path)
+    new_version = read_asset_version(plugin_assets / asset_version_file_name)
     old_version = read_asset_version(
-        anki_media_directory(media) / ASSET_VERSION_FILE_NAME)
+        anki_media_directory(media) / asset_version_file_name)
     if new_version is None:
         return False
     elif old_version is None or new_version > old_version:
         return True
     else:
         return False
-
-
-# TODO: Test the relative path.
-addon_path = os.path.dirname(os.path.dirname(__file__))
 
 
 def read_asset_version(asset_version: pathlib.Path) -> Optional[int]:
@@ -92,28 +88,24 @@ def read_asset_version(asset_version: pathlib.Path) -> Optional[int]:
         return None
 
 
-def plugin_assets_directory() -> pathlib.Path:
-    return pathlib.Path(addon_path) / 'asset-files'
-
-
 def anki_media_directory(media: MediaManager) -> pathlib.Path:
     return pathlib.Path(media.dir())
 
 
-def list_my_assets(dir: pathlib.Path) -> List[str]:
-    return [f for f in os.listdir(dir) if f.startswith(ASSET_PREFIX)]
+def list_my_assets(dir: pathlib.Path, asset_prefix: str) -> List[str]:
+    return [f for f in os.listdir(dir) if f.startswith(asset_prefix)]
 
 
-def install_media_assets(media: MediaManager) -> None:
-    plugin_assets_dir = plugin_assets_directory()
-    my_assets = list_my_assets(plugin_assets_dir)
+def install_media_assets(media: MediaManager, plugin_assets: pathlib.Path,
+                         asset_prefix) -> None:
+    my_assets = list_my_assets(plugin_assets, asset_prefix)
     for asset in my_assets:
-        media.add_file(str(plugin_assets_dir / asset))
+        media.add_file(str(plugin_assets / asset))
 
 
-def delete_media_assets(media: MediaManager) -> None:
+def delete_media_assets(media: MediaManager, asset_prefix) -> None:
     # TODO: Add a commit check for assets having a specific prefix.
-    my_assets = list_my_assets(anki_media_directory(media))
+    my_assets = list_my_assets(anki_media_directory(media), asset_prefix)
     media.trash_files(my_assets)
 
 
