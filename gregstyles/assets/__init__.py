@@ -93,7 +93,7 @@ def read_asset_version(asset_version: pathlib.Path) -> Optional[int]:
 
 
 def plugin_assets_directory() -> pathlib.Path:
-    return pathlib.Path(addon_path) / 'assets'
+    return pathlib.Path(addon_path) / 'asset-files'
 
 
 def anki_media_directory(media: MediaManager) -> pathlib.Path:
