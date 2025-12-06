@@ -1,7 +1,8 @@
 """This module handles Anki models."""
+
 from typing import Callable, Protocol
 
-from anki.collection import ModelManager
+from anki.models import ModelManager
 
 StringTransformer = Callable[[str], str]
 
@@ -23,12 +24,12 @@ class AnkiModelModifier(ModelModifier):
 
     def modify_templates(self, f: StringTransformer) -> None:
         for model in self.model_manager.all():
-            for tmpl in model['tmpls']:
-                tmpl['afmt'] = f(tmpl['afmt'])
-                tmpl['qfmt'] = f(tmpl['qfmt'])
+            for tmpl in model["tmpls"]:
+                tmpl["afmt"] = f(tmpl["afmt"])
+                tmpl["qfmt"] = f(tmpl["qfmt"])
             self.model_manager.save(model)
 
     def modify_styles(self, f: StringTransformer) -> None:
         for model in self.model_manager.all():
-            model['css'] = f(model['css'])
+            model["css"] = f(model["css"])
             self.model_manager.save(model)

@@ -2,7 +2,7 @@ from typing import List
 
 from gregstyles.assets.model import ModelModifier, StringTransformer
 
-__all__ = 'FakeModelModifier'
+__all__ = ["FakeModelModifier"]
 
 
 class FakeModelModifier(ModelModifier):
