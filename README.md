@@ -26,6 +26,12 @@ footprint (specifically, the need to respond to security advisories).
 
 #### Setup
 
+1. Install the required Python version:
+
+   ```shell
+   uv python install
+   ```
+
 1. Set up a local virtual environment:
 
    ```shell

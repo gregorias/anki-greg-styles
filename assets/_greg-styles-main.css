@@ -70,20 +70,6 @@ pre {
   border: black solid thick;
 }
 
-/* Obsolete classes. Do not use them. Prefer to use the classes above. */
-.img-lead-border {
-  display: flex;
-  justify-content: center;
-  margin: 0 0 0.75em 0;
-}
-.img-lead-border img {
-  border: black solid thick;
-}
-
-.bg-white {
-  background-color: white;
-}
-
 kbd.stackoverflow {
   display: inline-block;
   margin: 0 0.1em;
@@ -153,24 +139,8 @@ code.git-scm {
 }
 
 /* Tailwind-like utility classes */
-.flex {
-  display: flex;
-}
-
-.justify-center {
-  justify-content: center;
-}
-
 .leading-snug {
   line-height: 1.35em;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.text-justify {
-  text-align: justify;
 }
 
 /* https://heistak.github.io/your-code-displays-japanese-wrong/ */
