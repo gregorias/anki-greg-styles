@@ -46,6 +46,12 @@
   margin: 10px 0px;
 }
 
+p {
+  /* The default top margin adds annoying vertical whitespace if a p is the
+   * first element in a card. */
+  margin-top: 0;
+}
+
 pre {
   overflow-x: scroll;
 }
