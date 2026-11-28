@@ -76,6 +76,12 @@ pre {
   border: black solid thick;
 }
 
+/* A border for images with a light background (e.g., a transparent SVG with a
+ * white background) that already stand out on a white card. */
+.nightMode .dark-mode-only-border-img {
+  border: black solid thick;
+}
+
 kbd.stackoverflow {
   display: inline-block;
   margin: 0 0.1em;
